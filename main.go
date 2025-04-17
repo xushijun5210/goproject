@@ -6,7 +6,7 @@ import (
 	"goproject/handler"
 	"goproject/initialize"
 
-	"webthree/goproject/proto"
+	"goproject/proto"
 
 	"go.uber.org/zap"
 	"google.golang.org/grpc"

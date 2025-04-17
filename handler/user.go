@@ -6,7 +6,7 @@ import (
 	"goproject/model"
 	"strconv"
 	"time"
-	"webthree/goproject/proto"
+	"goproject/proto"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

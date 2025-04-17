@@ -1,4 +1,4 @@
-package user
+package proto
 
 import "github.com/golang/protobuf/proto"
 
