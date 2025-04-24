@@ -1,1 +1,3 @@
 // protoc -I . user.proto --go-grpc_out=:.
+//protoc -I . user.proto --go_out=plugins=grpc:. (弃用了)
+//protoc -I . user.proto --go_out=. --go-grpc_out=.

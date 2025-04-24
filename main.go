@@ -13,30 +13,29 @@ import (
 )
 
 func main() {
-	// //监听端口
-	// port := 8021
-	// //初始化日志
+	IP := flag.String("ip", "0.0.0.0", "ip地址")
+	Port := flag.Int("port", 0, "端口号")
+	//初始化日志
 	initialize.InitLogger()
-	// //初始化路由
-	// Router := initialize.Routers()
-	// zap.S().Info("router init success,端口：", port)
+	//初始化路由
+	Router := initialize.Routers()
+	zap.S().Info("router init success,端口：", Port)
 
-	// if err := Router.Run(fmt.Sprintf(":%d", port)); err != nil {
-	// 	zap.S().Panic("listen and serve error:%s", err.Error())
-	// }
-	IP := flag.String("ip", "localhost", "ip地址")
-	Port := flag.Int("port", 8021, "端口号")
+	if err := Router.Run(fmt.Sprintf(":%d",Port)); err != nil {
+		zap.S().Panic("listen and serve error:%s", err.Error())
+	}
 	flag.Parse()
-	fmt.Println("启动成功，监听地址：", *IP, "，端口号：", *Port)
-	//初始化grpc服务
+	zap.S().Info("ip: ", *IP)
+	zap.S().Info("port: ", *Port)
+	if *Port == 0{
+		*Port, _ = utils.GetFreePort()
+	}
+	zap.S().Info("port: ", *Port)
 	server := grpc.NewServer()
-	//启动grpc服务
-	proto.RegisterGreeterServer(server, &handler.UserServiceServer{})
-	listen, err := grpc.Listen("tcp", fmt.Sprintf("%s:%d", *IP, *Port))
+	proto.RegisterUserServer(server, &handler.UserServer{})
+	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", *IP, *Port))
 	if err != nil {
-		zap.S().Panic("listen error:%s", err.Error())
+		panic("failed to listen:" + err.Error())
 	}
-	if err := server.Serve(listen); err != nil {
-		zap.S().Panic("grpc serve error:%s", err.Error())
-	}
+	
 }
